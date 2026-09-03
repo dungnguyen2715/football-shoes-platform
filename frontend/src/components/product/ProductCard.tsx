@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
 import { toast } from "sonner";
 
@@ -26,8 +26,7 @@ export function ProductCard({ product, variant = "default", className }: Props) 
       )}
     >
       <Link
-        to="/product/$productId"
-        params={{ productId: product.id }}
+        to={`/product/${product.id}`}
         className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <div className="relative aspect-square overflow-hidden bg-surface">
@@ -61,7 +60,9 @@ export function ProductCard({ product, variant = "default", className }: Props) 
 
       <button
         type="button"
-        aria-label={saved ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`}
+        aria-label={
+          saved ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`
+        }
         aria-pressed={saved}
         onClick={() => {
           toggleWishlist(product.id);

@@ -1,23 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { formatAUD, getProduct } from "@/lib/products";
 import { useShop } from "@/store/shop";
 
-export const Route = createFileRoute("/cart")({
-  head: () => ({
-    meta: [
-      { title: "Your Cart | Bootyard" },
-      { name: "description", content: "Review the pre-owned football boots in your cart and submit an order request." },
-      { property: "og:title", content: "Your Cart | Bootyard" },
-      { property: "og:description", content: "Review your selected pre-owned football boots." },
-    ],
-  }),
-  component: Cart,
-});
-
-function Cart() {
+export default function Cart() {
   const { cart, setQty, removeFromCart } = useShop();
   const lines = cart.map((l) => ({ line: l, product: getProduct(l.id)! })).filter((x) => x.product);
   const subtotal = lines.reduce((sum, { line, product }) => sum + product.price * line.qty, 0);
@@ -46,7 +34,10 @@ function Cart() {
       <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
         <ul className="space-y-4">
           {lines.map(({ line, product }) => (
-            <li key={line.id} className="grid grid-cols-[88px_minmax(0,1fr)] gap-4 rounded-2xl border bg-card p-4">
+            <li
+              key={line.id}
+              className="grid grid-cols-[88px_minmax(0,1fr)] gap-4 rounded-2xl border bg-card p-4"
+            >
               <img
                 src={product.images[0]}
                 alt={product.name}
@@ -84,7 +75,12 @@ function Cart() {
                       <Plus className="size-3.5" />
                     </button>
                   </div>
-                  <Button variant="ghost" size="sm" aria-label={`Remove ${product.name}`} onClick={() => removeFromCart(line.id)}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    aria-label={`Remove ${product.name}`}
+                    onClick={() => removeFromCart(line.id)}
+                  >
                     <Trash2 className="size-4" />
                   </Button>
                 </div>

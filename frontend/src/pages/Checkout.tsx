@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -36,31 +36,26 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-export const Route = createFileRoute("/checkout")({
-  head: () => ({
-    meta: [
-      { title: "Checkout — Submit Your Order | Bootyard" },
-      {
-        name: "description",
-        content: "Send your details and we'll contact you on Messenger, Instagram, WhatsApp, Zalo or phone to finalise your boots.",
-      },
-      { property: "og:title", content: "Checkout — Submit Your Order | Bootyard" },
-      { property: "og:description", content: "No online payment. We contact you to finalise every order." },
-    ],
-  }),
-  component: Checkout,
-});
-
-function Checkout() {
+export default function Checkout() {
   const navigate = useNavigate();
   const { cart, clearCart } = useShop();
-  const lines = cart.map((l) => ({ qty: l.qty, product: getProduct(l.id)! })).filter((x) => x.product);
+  const lines = cart
+    .map((l) => ({ qty: l.qty, product: getProduct(l.id)! }))
+    .filter((x) => x.product);
   const subtotal = lines.reduce((s, l) => s + l.product.price * l.qty, 0);
   const shipping = subtotal > 300 || subtotal === 0 ? 0 : 15;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { name: "", phone: "", email: "", channel: "WhatsApp", handle: "", address: "", notes: "" },
+    defaultValues: {
+      name: "",
+      phone: "",
+      email: "",
+      channel: "WhatsApp",
+      handle: "",
+      address: "",
+      notes: "",
+    },
   });
 
   const onSubmit = () => {
@@ -90,7 +85,10 @@ function Checkout() {
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 rounded-2xl border bg-card p-6">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-6 rounded-2xl border bg-card p-6"
+          >
             <fieldset className="space-y-4">
               <legend className="eyebrow mb-2">Your details</legend>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -116,8 +114,16 @@ function Checkout() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {["WhatsApp", "Facebook Messenger", "Instagram", "Zalo", "Phone call"].map((c) => (
-                            <SelectItem key={c} value={c}>{c}</SelectItem>
+                          {[
+                            "WhatsApp",
+                            "Facebook Messenger",
+                            "Instagram",
+                            "Zalo",
+                            "Phone call",
+                          ].map((c) => (
+                            <SelectItem key={c} value={c}>
+                              {c}
+                            </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -125,13 +131,23 @@ function Checkout() {
                     </FormItem>
                   )}
                 />
-                <Field form={form} name="handle" label="Handle / username (optional)" placeholder="@yourhandle" />
+                <Field
+                  form={form}
+                  name="handle"
+                  label="Handle / username (optional)"
+                  placeholder="@yourhandle"
+                />
               </div>
             </fieldset>
 
             <fieldset className="space-y-4">
               <legend className="eyebrow mb-2">Shipping</legend>
-              <Field form={form} name="address" label="Address" placeholder="12 Smith St, Fitzroy VIC 3065" />
+              <Field
+                form={form}
+                name="address"
+                label="Address"
+                placeholder="12 Smith St, Fitzroy VIC 3065"
+              />
               <FormField
                 control={form.control}
                 name="notes"
@@ -158,10 +174,17 @@ function Checkout() {
           <ul className="space-y-3">
             {lines.map(({ product, qty }) => (
               <li key={product.id} className="flex items-center gap-3">
-                <img src={product.images[0]} alt="" loading="lazy" className="size-12 rounded-lg object-cover" />
+                <img
+                  src={product.images[0]}
+                  alt=""
+                  loading="lazy"
+                  className="size-12 rounded-lg object-cover"
+                />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-bold">{product.model}</p>
-                  <p className="text-xs text-muted-foreground">{product.size} · Qty {qty}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {product.size} · Qty {qty}
+                  </p>
                 </div>
                 <span className="text-sm font-semibold">{formatAUD(product.price * qty)}</span>
               </li>

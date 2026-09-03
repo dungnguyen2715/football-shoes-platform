@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,18 +10,6 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { adminOrders, formatAUD, getProduct } from "@/lib/products";
 import { useShop } from "@/store/shop";
 
-export const Route = createFileRoute("/account")({
-  head: () => ({
-    meta: [
-      { title: "My Account | Bootyard" },
-      { name: "description", content: "Manage your Bootyard profile, order history, saved boots and contact preferences." },
-      { property: "og:title", content: "My Account | Bootyard" },
-      { property: "og:description", content: "Your profile, orders and saved boots." },
-    ],
-  }),
-  component: Account,
-});
-
 const statusTone: Record<string, string> = {
   Pending: "bg-warning text-warning-foreground",
   Contacted: "bg-surface text-foreground",
@@ -30,7 +18,7 @@ const statusTone: Record<string, string> = {
   Cancelled: "bg-destructive text-destructive-foreground",
 };
 
-function Account() {
+export default function Account() {
   const wishlist = useShop((s) => s.wishlist);
   const saved = wishlist.map((id) => getProduct(id)!).filter(Boolean);
 
@@ -39,11 +27,17 @@ function Account() {
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 sm:flex sm:justify-between">
         <div className="flex min-w-0 items-center gap-4">
           <Avatar className="size-14 shrink-0">
-            <AvatarFallback className="bg-accent font-black text-accent-foreground">AT</AvatarFallback>
+            <AvatarFallback className="bg-accent font-black text-accent-foreground">
+              AT
+            </AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <h1 className="truncate text-2xl font-extrabold tracking-tight sm:text-3xl">Alex Turner</h1>
-            <p className="truncate text-sm text-muted-foreground">alex.turner@email.com · Melbourne, VIC</p>
+            <h1 className="truncate text-2xl font-extrabold tracking-tight sm:text-3xl">
+              Alex Turner
+            </h1>
+            <p className="truncate text-sm text-muted-foreground">
+              alex.turner@email.com · Melbourne, VIC
+            </p>
           </div>
         </div>
         <Button asChild variant="outline" className="min-h-11 rounded-full">
@@ -61,7 +55,10 @@ function Account() {
 
         <TabsContent value="orders" className="mt-6 space-y-3">
           {adminOrders.slice(0, 4).map((o) => (
-            <div key={o.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-2xl border bg-card p-5">
+            <div
+              key={o.id}
+              className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-2xl border bg-card p-5"
+            >
               <div className="min-w-0">
                 <p className="font-bold">{o.id}</p>
                 <p className="text-xs text-muted-foreground">
@@ -69,7 +66,9 @@ function Account() {
                 </p>
               </div>
               <div className="text-right">
-                <span className={`inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest ${statusTone[o.status]}`}>
+                <span
+                  className={`inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest ${statusTone[o.status]}`}
+                >
                   {o.status}
                 </span>
                 <p className="mt-1 font-extrabold">{formatAUD(o.total)}</p>
@@ -93,7 +92,10 @@ function Account() {
         </TabsContent>
 
         <TabsContent value="profile" className="mt-6">
-          <form className="grid gap-4 rounded-2xl border bg-card p-6 sm:grid-cols-2" onSubmit={(e) => e.preventDefault()}>
+          <form
+            className="grid gap-4 rounded-2xl border bg-card p-6 sm:grid-cols-2"
+            onSubmit={(e) => e.preventDefault()}
+          >
             {[
               ["Full name", "Alex Turner"],
               ["Email", "alex.turner@email.com"],
@@ -119,7 +121,10 @@ function Account() {
             ["Price drops", "Notify me when a saved pair is reduced"],
             ["SMS updates", "Order updates by text message"],
           ].map(([title, sub], i) => (
-            <div key={title} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-2xl border bg-card p-5">
+            <div
+              key={title}
+              className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-2xl border bg-card p-5"
+            >
               <div className="min-w-0">
                 <p className="font-bold">{title}</p>
                 <p className="text-xs text-muted-foreground">{sub}</p>

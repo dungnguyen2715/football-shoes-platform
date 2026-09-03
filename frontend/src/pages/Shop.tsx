@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { useSearchParams } from "react-router-dom";
 import { SlidersHorizontal, Search, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -16,37 +16,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ProductCard } from "@/components/product/ProductCard";
-import { brands, colors, products, sizes, surfaceLabel, surfaces, type Surface } from "@/lib/products";
+import {
+  brands,
+  colors,
+  products,
+  sizes,
+  surfaceLabel,
+  surfaces,
+  type Surface,
+} from "@/lib/products";
 
 interface ShopSearch {
   brand?: string;
   surface?: string;
 }
 
-export const Route = createFileRoute("/shop")({
-  validateSearch: (s: Record<string, unknown>): ShopSearch => ({
-    brand: typeof s.brand === "string" ? s.brand : undefined,
-    surface: typeof s.surface === "string" ? s.surface : undefined,
-  }),
-  head: () => ({
-    meta: [
-      { title: "Shop Pre-Owned Football Boots | Bootyard" },
-      {
-        name: "description",
-        content:
-          "Filter second-hand football boots by brand, size, condition, surface, colour and price. One-of-one pairs, shipped Australia wide.",
-      },
-      { property: "og:title", content: "Shop Pre-Owned Football Boots | Bootyard" },
-      { property: "og:description", content: "Filter graded second-hand football boots by brand, size and surface." },
-    ],
-  }),
-  component: Shop,
-});
-
 type Sort = "newest" | "price-asc" | "price-desc" | "condition";
 
-function Shop() {
-  const initial = Route.useSearch();
+export default function Shop() {
+  const [searchParams] = useSearchParams();
+  const initial = {
+    brand: searchParams.get("brand") || undefined,
+    surface: searchParams.get("surface") || undefined,
+  };
   const [query, setQuery] = useState("");
   const [brandSel, setBrandSel] = useState<string[]>(initial.brand ? [initial.brand] : []);
   const [sizeSel, setSizeSel] = useState<string[]>([]);
@@ -98,7 +90,13 @@ function Shop() {
     <div className="space-y-8">
       <FilterGroup title="Brand">
         {brands.map((b) => (
-          <CheckRow key={b} id={`b-${b}`} label={b} checked={brandSel.includes(b)} onChange={() => toggle(brandSel, setBrandSel, b)} />
+          <CheckRow
+            key={b}
+            id={`b-${b}`}
+            label={b}
+            checked={brandSel.includes(b)}
+            onChange={() => toggle(brandSel, setBrandSel, b)}
+          />
         ))}
       </FilterGroup>
 
@@ -111,7 +109,9 @@ function Shop() {
               aria-pressed={sizeSel.includes(s)}
               onClick={() => toggle(sizeSel, setSizeSel, s)}
               className={`min-h-11 rounded-xl border px-3 text-sm font-semibold transition-colors ${
-                sizeSel.includes(s) ? "border-accent bg-accent text-accent-foreground" : "hover:bg-surface"
+                sizeSel.includes(s)
+                  ? "border-accent bg-accent text-accent-foreground"
+                  : "hover:bg-surface"
               }`}
             >
               {s.replace("US ", "")}
@@ -134,20 +134,45 @@ function Shop() {
 
       <FilterGroup title="Colour">
         {colors.map((c) => (
-          <CheckRow key={c} id={`c-${c}`} label={c} checked={colorSel.includes(c)} onChange={() => toggle(colorSel, setColorSel, c)} />
+          <CheckRow
+            key={c}
+            id={`c-${c}`}
+            label={c}
+            checked={colorSel.includes(c)}
+            onChange={() => toggle(colorSel, setColorSel, c)}
+          />
         ))}
       </FilterGroup>
 
       <FilterGroup title={`Condition — ${minCondition}/10 and up`}>
-        <Slider value={[minCondition]} min={5} max={10} step={1} onValueChange={([v]) => setMinCondition(v)} aria-label="Minimum condition" />
+        <Slider
+          value={[minCondition]}
+          min={5}
+          max={10}
+          step={1}
+          onValueChange={([v]) => setMinCondition(v)}
+          aria-label="Minimum condition"
+        />
       </FilterGroup>
 
       <FilterGroup title={`Max price — $${maxPrice}`}>
-        <Slider value={[maxPrice]} min={50} max={500} step={10} onValueChange={([v]) => setMaxPrice(v)} aria-label="Maximum price" />
+        <Slider
+          value={[maxPrice]}
+          min={50}
+          max={500}
+          step={10}
+          onValueChange={([v]) => setMaxPrice(v)}
+          aria-label="Maximum price"
+        />
       </FilterGroup>
 
       <FilterGroup title="Availability">
-        <CheckRow id="stock" label="Available only" checked={inStockOnly} onChange={() => setInStockOnly((v) => !v)} />
+        <CheckRow
+          id="stock"
+          label="Available only"
+          checked={inStockOnly}
+          onChange={() => setInStockOnly((v) => !v)}
+        />
       </FilterGroup>
 
       <Button variant="outline" className="w-full" onClick={clearAll}>
@@ -196,7 +221,10 @@ function Shop() {
               </SheetContent>
             </Sheet>
             <Select value={sort} onValueChange={(v) => setSort(v as Sort)}>
-              <SelectTrigger className="hidden h-11 w-48 rounded-full sm:flex" aria-label="Sort products">
+              <SelectTrigger
+                className="hidden h-11 w-48 rounded-full sm:flex"
+                aria-label="Sort products"
+              >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -211,11 +239,17 @@ function Shop() {
           {activeCount > 0 && (
             <div className="mb-4 flex flex-wrap gap-2">
               {[...brandSel, ...sizeSel, ...surfaceSel, ...colorSel].map((t) => (
-                <span key={t} className="inline-flex items-center gap-1 rounded-full bg-surface px-3 py-1 text-xs font-semibold">
+                <span
+                  key={t}
+                  className="inline-flex items-center gap-1 rounded-full bg-surface px-3 py-1 text-xs font-semibold"
+                >
                   {t}
                 </span>
               ))}
-              <button onClick={clearAll} className="inline-flex items-center gap-1 text-xs font-semibold underline">
+              <button
+                onClick={clearAll}
+                className="inline-flex items-center gap-1 text-xs font-semibold underline"
+              >
                 <X className="size-3" /> clear
               </button>
             </div>

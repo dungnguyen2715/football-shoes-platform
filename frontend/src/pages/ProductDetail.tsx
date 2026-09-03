@@ -1,41 +1,27 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { Link, useParams, Navigate } from "react-router-dom";
 import { Heart, Share2, ShoppingBag, Check, Truck, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { ProductCard } from "@/components/product/ProductCard";
 import { cn } from "@/lib/utils";
 import { formatAUD, getProduct, products, surfaceLabel, type Product } from "@/lib/products";
 import { useShop } from "@/store/shop";
 
-export const Route = createFileRoute("/product/$productId")({
-  loader: ({ params }) => {
-    const product = getProduct(params.productId);
-    if (!product) throw notFound();
-    return { product };
-  },
-  head: ({ loaderData }) => {
-    if (!loaderData)
-      return { meta: [{ title: "Boot not found | Bootyard" }, { name: "robots", content: "noindex" }] };
-    const p = loaderData.product;
-    const title = `${p.name} — ${p.size}, ${p.condition}/10 | Bootyard`;
-    const description = `Pre-owned ${p.name} in ${p.colorway}, size ${p.size}, graded ${p.condition}/10. ${formatAUD(p.price)} shipped Australia wide.`;
-    return {
-      meta: [
-        { title },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-      ],
-    };
-  },
-  component: ProductDetail,
-});
+export default function ProductDetail() {
+  const { productId } = useParams();
+  const product = getProduct(productId as string);
 
-function ProductDetail() {
-  const { product } = Route.useLoaderData() as { product: Product };
+  if (!product) {
+    return <Navigate to="/404" replace />;
+  }
   const [active, setActive] = useState(0);
   const [zoom, setZoom] = useState(false);
   const addToCart = useShop((s) => s.addToCart);
@@ -45,7 +31,9 @@ function ProductDetail() {
   const sold = product.availability !== "available";
   const discount = Math.round((1 - product.price / product.retailPrice) * 100);
 
-  const related = products.filter((p) => p.id !== product.id && p.brand === product.brand).slice(0, 4);
+  const related = products
+    .filter((p) => p.id !== product.id && p.brand === product.brand)
+    .slice(0, 4);
 
   const specs: Array<[string, string]> = [
     ["Brand", product.brand],
@@ -60,9 +48,14 @@ function ProductDetail() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
       <nav aria-label="Breadcrumb" className="mb-6 text-xs text-muted-foreground">
-        <Link to="/" className="hover:text-foreground">Home</Link> /{" "}
-        <Link to="/shop" className="hover:text-foreground">Shop</Link> /{" "}
-        <span className="text-foreground">{product.model}</span>
+        <Link to="/" className="hover:text-foreground">
+          Home
+        </Link>{" "}
+        /{" "}
+        <Link to="/shop" className="hover:text-foreground">
+          Shop
+        </Link>{" "}
+        / <span className="text-foreground">{product.model}</span>
       </nav>
 
       <div className="grid gap-10 lg:grid-cols-2">
@@ -113,12 +106,18 @@ function ProductDetail() {
               </span>
             )}
           </div>
-          <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">{product.model}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{product.colorway} · Size {product.size}</p>
+          <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">
+            {product.model}
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {product.colorway} · Size {product.size}
+          </p>
 
           <div className="mt-6 flex flex-wrap items-baseline gap-3">
             <span className="display-xl text-4xl">{formatAUD(product.price)}</span>
-            <span className="text-sm text-muted-foreground line-through">{formatAUD(product.retailPrice)}</span>
+            <span className="text-sm text-muted-foreground line-through">
+              {formatAUD(product.retailPrice)}
+            </span>
             {discount > 0 && (
               <span className="rounded-full bg-accent px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest text-accent-foreground">
                 {discount}% under retail
@@ -130,12 +129,19 @@ function ProductDetail() {
           <div className="mt-6 rounded-2xl border bg-card p-5">
             <div className="flex items-center justify-between text-sm font-bold">
               <span>Condition</span>
-              <span>{product.condition}/10 · {product.conditionLabel}</span>
+              <span>
+                {product.condition}/10 · {product.conditionLabel}
+              </span>
             </div>
             <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted">
-              <div className="h-full rounded-full bg-accent" style={{ width: `${product.condition * 10}%` }} />
+              <div
+                className="h-full rounded-full bg-accent"
+                style={{ width: `${product.condition * 10}%` }}
+              />
             </div>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{product.description}</p>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              {product.description}
+            </p>
           </div>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -173,9 +179,16 @@ function ProductDetail() {
           </div>
 
           <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
-            <li className="flex items-center gap-2"><Check className="size-4 text-accent" /> One-of-one pair — only 1 in stock</li>
-            <li className="flex items-center gap-2"><Truck className="size-4 text-accent" /> Tracked shipping Australia wide</li>
-            <li className="flex items-center gap-2"><ShieldCheck className="size-4 text-accent" /> No online payment — we contact you to confirm</li>
+            <li className="flex items-center gap-2">
+              <Check className="size-4 text-accent" /> One-of-one pair — only 1 in stock
+            </li>
+            <li className="flex items-center gap-2">
+              <Truck className="size-4 text-accent" /> Tracked shipping Australia wide
+            </li>
+            <li className="flex items-center gap-2">
+              <ShieldCheck className="size-4 text-accent" /> No online payment — we contact you to
+              confirm
+            </li>
           </ul>
 
           <Accordion type="single" collapsible defaultValue="specs" className="mt-8">
@@ -195,8 +208,8 @@ function ProductDetail() {
             <AccordionItem value="shipping">
               <AccordionTrigger>Shipping & returns</AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground">
-                Flat $15 tracked shipping anywhere in Australia, free over $300. Sizing issues can be
-                returned within 7 days of delivery.
+                Flat $15 tracked shipping anywhere in Australia, free over $300. Sizing issues can
+                be returned within 7 days of delivery.
               </AccordionContent>
             </AccordionItem>
           </Accordion>
