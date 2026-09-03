@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "react-router-dom";
 import { Home, Search, Heart, ShoppingBag, User } from "lucide-react";
 
 import { useShop } from "@/store/shop";

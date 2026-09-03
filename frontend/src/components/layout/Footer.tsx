@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { Instagram, Facebook, MessageCircle, Phone } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -30,10 +30,18 @@ export function Footer() {
 
         <div className="space-y-3 text-sm">
           <p className="eyebrow">Shop</p>
-          <Link to="/shop" className="block text-muted-foreground hover:text-foreground">All boots</Link>
-          <Link to="/shop" className="block text-muted-foreground hover:text-foreground">New arrivals</Link>
-          <Link to="/shop" className="block text-muted-foreground hover:text-foreground">Under $200</Link>
-          <Link to="/wishlist" className="block text-muted-foreground hover:text-foreground">Wishlist</Link>
+          <Link to="/shop" className="block text-muted-foreground hover:text-foreground">
+            All boots
+          </Link>
+          <Link to="/shop" className="block text-muted-foreground hover:text-foreground">
+            New arrivals
+          </Link>
+          <Link to="/shop" className="block text-muted-foreground hover:text-foreground">
+            Under $200
+          </Link>
+          <Link to="/wishlist" className="block text-muted-foreground hover:text-foreground">
+            Wishlist
+          </Link>
         </div>
 
         <div className="space-y-3 text-sm">
@@ -48,13 +56,21 @@ export function Footer() {
           <p className="eyebrow">Drop alerts</p>
           <p className="text-sm text-muted-foreground">One email a week. New pairs only.</p>
           <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-            <Input aria-label="Email address" type="email" placeholder="you@email.com" className="h-11" />
-            <Button type="submit" className="h-11 shrink-0">Join</Button>
+            <Input
+              aria-label="Email address"
+              type="email"
+              placeholder="you@email.com"
+              className="h-11"
+            />
+            <Button type="submit" className="h-11 shrink-0">
+              Join
+            </Button>
           </form>
         </div>
       </div>
       <div className="border-t px-4 py-6 text-center text-xs text-muted-foreground sm:px-6">
-        © {new Date().getFullYear()} Bootyard. Prices in AUD. No online payment — we contact you to finalise every order.
+        © {new Date().getFullYear()} Bootyard. Prices in AUD. No online payment — we contact you to
+        finalise every order.
       </div>
     </footer>
   );

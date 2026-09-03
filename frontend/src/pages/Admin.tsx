@@ -1,24 +1,26 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { LayoutDashboard, Package, ShoppingCart, Users, BarChart3, Settings, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  Users,
+  BarChart3,
+  Settings,
+  ArrowLeft,
+} from "lucide-react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { adminOrders, formatAUD, products, revenueSeries } from "@/lib/products";
-
-export const Route = createFileRoute("/admin")({
-  head: () => ({
-    meta: [
-      { title: "Admin Dashboard | Bootyard" },
-      { name: "description", content: "Manage inventory, orders, customers and analytics for the Bootyard marketplace." },
-      { property: "og:title", content: "Admin Dashboard | Bootyard" },
-      { property: "og:description", content: "Inventory, orders and analytics." },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
-  component: Admin,
-});
 
 const statusTone: Record<string, string> = {
   Pending: "bg-warning text-warning-foreground",
@@ -28,7 +30,7 @@ const statusTone: Record<string, string> = {
   Cancelled: "bg-destructive text-destructive-foreground",
 };
 
-function Admin() {
+export default function Admin() {
   const sold = products.filter((p) => p.availability === "sold").length;
   const pending = adminOrders.filter((o) => o.status === "Pending").length;
 
@@ -48,13 +50,22 @@ function Admin() {
           <p className="display-xl px-2 py-4 text-lg">Bootyard</p>
           <nav className="mt-4 space-y-1">
             {nav.map(([label, Icon]) => (
-              <span key={label} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-sidebar-accent">
+              <span
+                key={label}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-sidebar-accent"
+              >
                 <Icon className="size-4" /> {label}
               </span>
             ))}
           </nav>
-          <Button asChild variant="ghost" className="mt-8 w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent">
-            <Link to="/"><ArrowLeft className="mr-2 size-4" /> Back to store</Link>
+          <Button
+            asChild
+            variant="ghost"
+            className="mt-8 w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent"
+          >
+            <Link to="/">
+              <ArrowLeft className="mr-2 size-4" /> Back to store
+            </Link>
           </Button>
         </aside>
 
@@ -62,7 +73,9 @@ function Admin() {
           <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
             <div className="min-w-0">
               <p className="eyebrow">Dashboard</p>
-              <h1 className="truncate text-2xl font-extrabold tracking-tight sm:text-3xl">Good morning, Owner</h1>
+              <h1 className="truncate text-2xl font-extrabold tracking-tight sm:text-3xl">
+                Good morning, Owner
+              </h1>
             </div>
             <Button className="min-h-11 rounded-full">Add product</Button>
           </header>
@@ -72,7 +85,11 @@ function Admin() {
               ["Revenue (Jul)", formatAUD(9350), "+18% vs Jun"],
               ["Pairs sold", `${sold + 37}`, "39 orders"],
               ["Pending orders", `${pending}`, "Awaiting contact"],
-              ["Live inventory", `${products.filter((p) => p.availability === "available").length}`, "One-of-one pairs"],
+              [
+                "Live inventory",
+                `${products.filter((p) => p.availability === "available").length}`,
+                "One-of-one pairs",
+              ],
             ].map(([label, value, sub]) => (
               <div key={label} className="rounded-2xl border bg-card p-5 shadow-card">
                 <p className="eyebrow">{label}</p>
@@ -111,7 +128,9 @@ function Admin() {
                       <TableCell>{o.channel}</TableCell>
                       <TableCell>{formatAUD(o.total)}</TableCell>
                       <TableCell>
-                        <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest ${statusTone[o.status]}`}>
+                        <span
+                          className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest ${statusTone[o.status]}`}
+                        >
                           {o.status}
                         </span>
                       </TableCell>
@@ -121,7 +140,10 @@ function Admin() {
               </Table>
             </TabsContent>
 
-            <TabsContent value="inventory" className="mt-4 overflow-x-auto rounded-2xl border bg-card">
+            <TabsContent
+              value="inventory"
+              className="mt-4 overflow-x-auto rounded-2xl border bg-card"
+            >
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -137,7 +159,12 @@ function Admin() {
                     <TableRow key={p.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
-                          <img src={p.images[0]} alt="" loading="lazy" className="size-10 rounded-lg object-cover" />
+                          <img
+                            src={p.images[0]}
+                            alt=""
+                            loading="lazy"
+                            className="size-10 rounded-lg object-cover"
+                          />
                           <span className="font-semibold">{p.name}</span>
                         </div>
                       </TableCell>

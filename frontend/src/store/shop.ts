@@ -19,9 +19,7 @@ export const useShop = create<ShopState>((set) => ({
   cart: [],
   wishlist: [],
   addToCart: (id) =>
-    set((s) =>
-      s.cart.some((l) => l.id === id) ? s : { cart: [...s.cart, { id, qty: 1 }] },
-    ),
+    set((s) => (s.cart.some((l) => l.id === id) ? s : { cart: [...s.cart, { id, qty: 1 }] })),
   removeFromCart: (id) => set((s) => ({ cart: s.cart.filter((l) => l.id !== id) })),
   setQty: (id, qty) =>
     set((s) => ({ cart: s.cart.map((l) => (l.id === id ? { ...l, qty: Math.max(1, qty) } : l)) })),

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { ArrowRight, ShieldCheck, Truck, BadgeCheck, Star } from "lucide-react";
 
 import heroImg from "@/assets/hero.jpg";
@@ -6,26 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product/ProductCard";
 import { products, brands, reviews, surfaceLabel, surfaces } from "@/lib/products";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Bootyard — Pre-Owned Football Shoes in Australia" },
-      {
-        name: "description",
-        content:
-          "Shop authenticated second-hand football boots. Every pair graded 1-10, photographed in detail and shipped Australia wide.",
-      },
-      { property: "og:title", content: "Bootyard — Pre-Owned Football Shoes in Australia" },
-      {
-        property: "og:description",
-        content: "Shop authenticated second-hand football boots. Every pair graded 1-10, photographed in detail and shipped Australia wide.",
-      },
-    ],
-  }),
-  component: Home,
-});
-
-function Home() {
+export default function Home() {
   const featured = products.filter((p) => p.availability !== "sold").slice(0, 4);
   const latest = [...products].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 8);
 
@@ -54,7 +35,11 @@ function Home() {
             Every pair is inspected, graded out of ten and listed once. When it's gone, it's gone.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg" className="min-h-12 rounded-full bg-accent px-7 text-accent-foreground hover:bg-accent/90">
+            <Button
+              asChild
+              size="lg"
+              className="min-h-12 rounded-full bg-accent px-7 text-accent-foreground hover:bg-accent/90"
+            >
               <Link to="/shop">
                 Shop the yard <ArrowRight className="ml-1 size-4" />
               </Link>
@@ -101,7 +86,11 @@ function Home() {
       <Section
         eyebrow="Hand picked"
         title="Featured pairs"
-        action={<Link to="/shop" className="text-sm font-bold underline underline-offset-4">View all</Link>}
+        action={
+          <Link to="/shop" className="text-sm font-bold underline underline-offset-4">
+            View all
+          </Link>
+        }
       >
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {featured.map((p) => (
@@ -116,8 +105,7 @@ function Home() {
           {brands.map((b) => (
             <Link
               key={b}
-              to="/shop"
-              search={{ brand: b }}
+              to={`/shop?brand=${b}`}
               className="card-lift grid min-h-24 place-items-center rounded-2xl border bg-card text-lg font-extrabold tracking-tight"
             >
               {b}
@@ -132,8 +120,7 @@ function Home() {
           {surfaces.map((s) => (
             <Link
               key={s}
-              to="/shop"
-              search={{ surface: s }}
+              to={`/shop?surface=${s}`}
               className="card-lift w-44 shrink-0 snap-start rounded-2xl border bg-gradient-to-br from-surface to-card p-5 sm:w-auto"
             >
               <p className="display-xl text-3xl text-accent">{s}</p>
@@ -157,7 +144,11 @@ function Home() {
             </p>
           </div>
           <div className="lg:justify-self-end">
-            <Button asChild size="lg" className="min-h-12 rounded-full bg-accent px-7 text-accent-foreground hover:bg-accent/90">
+            <Button
+              asChild
+              size="lg"
+              className="min-h-12 rounded-full bg-accent px-7 text-accent-foreground hover:bg-accent/90"
+            >
               <Link to="/account">Start a listing</Link>
             </Button>
           </div>

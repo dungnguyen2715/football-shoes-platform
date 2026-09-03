@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -6,26 +6,16 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { getProduct } from "@/lib/products";
 import { useShop } from "@/store/shop";
 
-export const Route = createFileRoute("/wishlist")({
-  head: () => ({
-    meta: [
-      { title: "Wishlist | Bootyard" },
-      { name: "description", content: "The pre-owned football boots you've saved for later at Bootyard." },
-      { property: "og:title", content: "Wishlist | Bootyard" },
-      { property: "og:description", content: "Boots you've saved for later." },
-    ],
-  }),
-  component: Wishlist,
-});
-
-function Wishlist() {
+export default function Wishlist() {
   const wishlist = useShop((s) => s.wishlist);
   const items = wishlist.map((id) => getProduct(id)!).filter(Boolean);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
       <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Wishlist</h1>
-      <p className="mt-2 text-sm text-muted-foreground">{items.length} saved pair{items.length === 1 ? "" : "s"}</p>
+      <p className="mt-2 text-sm text-muted-foreground">
+        {items.length} saved pair{items.length === 1 ? "" : "s"}
+      </p>
 
       {items.length === 0 ? (
         <div className="mt-10 grid place-items-center rounded-3xl border border-dashed py-24 text-center">

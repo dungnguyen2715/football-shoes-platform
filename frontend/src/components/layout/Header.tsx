@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, Search, ShoppingBag, Heart, User, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -42,7 +42,12 @@ export function Header() {
         <div className="flex min-w-0 items-center gap-2">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Open menu" className="min-h-11 min-w-11 lg:hidden">
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Open menu"
+                className="min-h-11 min-w-11 lg:hidden"
+              >
                 <Menu className="size-5" />
               </Button>
             </SheetTrigger>
@@ -58,7 +63,10 @@ export function Header() {
                     {n.label}
                   </Link>
                 ))}
-                <Link to="/admin" className="rounded-xl px-3 py-3 text-lg font-bold tracking-tight hover:bg-surface">
+                <Link
+                  to="/admin"
+                  className="rounded-xl px-3 py-3 text-lg font-bold tracking-tight hover:bg-surface"
+                >
                   Admin
                 </Link>
               </nav>
@@ -105,7 +113,12 @@ export function Header() {
 
         <div className="flex shrink-0 items-center gap-1">
           <ThemeToggle />
-          <Button asChild variant="ghost" size="icon" className="hidden min-h-11 min-w-11 rounded-full sm:inline-flex">
+          <Button
+            asChild
+            variant="ghost"
+            size="icon"
+            className="hidden min-h-11 min-w-11 rounded-full sm:inline-flex"
+          >
             <Link to="/wishlist" aria-label={`Wishlist, ${wishCount} items`}>
               <span className="relative">
                 <Heart className="size-4" />
@@ -117,7 +130,12 @@ export function Header() {
               </span>
             </Link>
           </Button>
-          <Button asChild variant="ghost" size="icon" className="hidden min-h-11 min-w-11 rounded-full sm:inline-flex">
+          <Button
+            asChild
+            variant="ghost"
+            size="icon"
+            className="hidden min-h-11 min-w-11 rounded-full sm:inline-flex"
+          >
             <Link to="/account" aria-label="Account">
               <User className="size-4" />
             </Link>
