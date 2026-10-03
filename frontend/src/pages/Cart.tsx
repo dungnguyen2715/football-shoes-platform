@@ -2,12 +2,15 @@ import { Link } from "react-router-dom";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { formatAUD, getProduct } from "@/lib/products";
+import { formatAUD, getProduct } from "@/features/products/products.service";
 import { useShop } from "@/store/shop";
 
 export default function Cart() {
   const { cart, setQty, removeFromCart } = useShop();
-  const lines = cart.map((l) => ({ line: l, product: getProduct(l.id)! })).filter((x) => x.product);
+  const lines = cart.flatMap((line) => {
+    const product = getProduct(line.id);
+    return product ? [{ line, product }] : [];
+  });
   const subtotal = lines.reduce((sum, { line, product }) => sum + product.price * line.qty, 0);
   const shipping = subtotal === 0 || subtotal > 300 ? 0 : 15;
 

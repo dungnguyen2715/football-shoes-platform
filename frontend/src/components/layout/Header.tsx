@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Menu, Search, ShoppingBag, Heart, User, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -55,13 +55,13 @@ export function Header() {
               <SheetTitle className="sr-only">Menu</SheetTitle>
               <nav className="mt-10 flex flex-col gap-1 px-4">
                 {nav.map((n) => (
-                  <Link
+                  <NavLink
                     key={n.label}
                     to={n.to}
                     className="rounded-xl px-3 py-3 text-lg font-bold tracking-tight hover:bg-surface"
                   >
                     {n.label}
-                  </Link>
+                  </NavLink>
                 ))}
                 <Link
                   to="/admin"
@@ -82,14 +82,17 @@ export function Header() {
 
           <nav className="ml-6 hidden items-center gap-6 lg:flex">
             {nav.slice(0, 2).map((n) => (
-              <Link
+              <NavLink
                 key={n.label}
                 to={n.to}
-                className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
-                activeProps={{ className: "text-foreground" }}
+                className={({ isActive }) =>
+                  `text-sm font-semibold transition-colors hover:text-foreground ${
+                    isActive ? "text-foreground" : "text-muted-foreground"
+                  }`
+                }
               >
                 {n.label}
-              </Link>
+              </NavLink>
             ))}
             <Link
               to="/admin"

@@ -11,27 +11,33 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ProductCard } from "@/components/product/ProductCard";
-import { cn } from "@/lib/utils";
-import { formatAUD, getProduct, products, surfaceLabel, type Product } from "@/lib/products";
+import { cn } from "@/utils/cn";
+import {
+  formatAUD,
+  getProduct,
+  getProducts,
+  surfaceLabel,
+} from "@/features/products/products.service";
 import { useShop } from "@/store/shop";
 
 export default function ProductDetail() {
   const { productId } = useParams();
-  const product = getProduct(productId as string);
+  const product = getProduct(productId);
 
-  if (!product) {
-    return <Navigate to="/404" replace />;
-  }
   const [active, setActive] = useState(0);
   const [zoom, setZoom] = useState(false);
   const addToCart = useShop((s) => s.addToCart);
   const wishlist = useShop((s) => s.wishlist);
   const toggleWishlist = useShop((s) => s.toggleWishlist);
+
+  if (!product) {
+    return <Navigate to="/404" replace />;
+  }
   const saved = wishlist.includes(product.id);
   const sold = product.availability !== "available";
   const discount = Math.round((1 - product.price / product.retailPrice) * 100);
 
-  const related = products
+  const related = getProducts()
     .filter((p) => p.id !== product.id && p.brand === product.brand)
     .slice(0, 4);
 

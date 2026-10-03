@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
 import { toast } from "sonner";
 
-import { cn } from "@/lib/utils";
-import { formatAUD, type Product } from "@/lib/products";
+import { cn } from "@/utils/cn";
+import { formatAUD } from "@/features/products/products.service";
+import type { Product } from "@/types";
 import { useShop } from "@/store/shop";
 
 interface Props {

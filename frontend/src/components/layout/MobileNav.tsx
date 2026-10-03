@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Home, Search, Heart, ShoppingBag, User } from "lucide-react";
 
 import { useShop } from "@/store/shop";
@@ -22,11 +22,14 @@ export function MobileNav() {
       <ul className="grid grid-cols-5">
         {items.map(({ to, label, icon: Icon }) => (
           <li key={label}>
-            <Link
+            <NavLink
               to={to}
-              className="flex min-h-14 flex-col items-center justify-center gap-1 text-[10px] font-semibold text-muted-foreground"
-              activeProps={{ className: "text-foreground" }}
-              activeOptions={{ exact: to === "/" }}
+              end={to === "/"}
+              className={({ isActive }) =>
+                `flex min-h-14 flex-col items-center justify-center gap-1 text-[10px] font-semibold ${
+                  isActive ? "text-foreground" : "text-muted-foreground"
+                }`
+              }
             >
               <span className="relative">
                 <Icon className="size-5" />
@@ -37,7 +40,7 @@ export function MobileNav() {
                 )}
               </span>
               {label}
-            </Link>
+            </NavLink>
           </li>
         ))}
       </ul>

@@ -1,12 +1,20 @@
+import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ShieldCheck, Truck, BadgeCheck, Star } from "lucide-react";
 
 import heroImg from "@/assets/hero.jpg";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product/ProductCard";
-import { products, brands, reviews, surfaceLabel, surfaces } from "@/lib/products";
+import {
+  getProducts,
+  brands,
+  reviews,
+  surfaceLabel,
+  surfaces,
+} from "@/features/products/products.service";
 
 export default function Home() {
+  const products = getProducts();
   const featured = products.filter((p) => p.availability !== "sold").slice(0, 4);
   const latest = [...products].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 8);
 
@@ -194,8 +202,8 @@ function Section({
 }: {
   eyebrow: string;
   title: string;
-  action?: React.ReactNode;
-  children: React.ReactNode;
+  action?: ReactNode;
+  children: ReactNode;
 }) {
   return (
     <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">

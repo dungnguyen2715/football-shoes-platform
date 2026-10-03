@@ -3,12 +3,15 @@ import { Heart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/product/ProductCard";
-import { getProduct } from "@/lib/products";
+import { getProduct } from "@/features/products/products.service";
 import { useShop } from "@/store/shop";
 
 export default function Wishlist() {
   const wishlist = useShop((s) => s.wishlist);
-  const items = wishlist.map((id) => getProduct(id)!).filter(Boolean);
+  const items = wishlist.flatMap((id) => {
+    const product = getProduct(id);
+    return product ? [product] : [];
+  });
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">

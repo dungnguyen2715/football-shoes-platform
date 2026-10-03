@@ -7,10 +7,13 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ProductCard } from "@/components/product/ProductCard";
-import { adminOrders, formatAUD, getProduct } from "@/lib/products";
+import { getAdminOrders } from "@/features/orders/orders.service";
+import { storefrontCustomer } from "@/features/customers/data/mock-customers";
+import { formatAUD, getProduct } from "@/features/products/products.service";
 import { useShop } from "@/store/shop";
+import type { AdminOrder } from "@/types";
 
-const statusTone: Record<string, string> = {
+const statusTone: Record<AdminOrder["status"], string> = {
   Pending: "bg-warning text-warning-foreground",
   Contacted: "bg-surface text-foreground",
   Confirmed: "bg-accent text-accent-foreground",
@@ -19,8 +22,12 @@ const statusTone: Record<string, string> = {
 };
 
 export default function Account() {
+  const adminOrders = getAdminOrders();
   const wishlist = useShop((s) => s.wishlist);
-  const saved = wishlist.map((id) => getProduct(id)!).filter(Boolean);
+  const saved = wishlist.flatMap((id) => {
+    const product = getProduct(id);
+    return product ? [product] : [];
+  });
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
@@ -33,10 +40,10 @@ export default function Account() {
           </Avatar>
           <div className="min-w-0">
             <h1 className="truncate text-2xl font-extrabold tracking-tight sm:text-3xl">
-              Alex Turner
+              {storefrontCustomer.name}
             </h1>
             <p className="truncate text-sm text-muted-foreground">
-              alex.turner@email.com · Melbourne, VIC
+              {storefrontCustomer.email} · {storefrontCustomer.location}
             </p>
           </div>
         </div>
@@ -97,12 +104,12 @@ export default function Account() {
             onSubmit={(e) => e.preventDefault()}
           >
             {[
-              ["Full name", "Alex Turner"],
-              ["Email", "alex.turner@email.com"],
-              ["Phone", "+61 412 000 111"],
-              ["Instagram", "@alexturner"],
-              ["WhatsApp", "+61 412 000 111"],
-              ["Zalo", "—"],
+              ["Full name", storefrontCustomer.name],
+              ["Email", storefrontCustomer.email],
+              ["Phone", storefrontCustomer.phone],
+              ["Instagram", storefrontCustomer.instagram],
+              ["WhatsApp", storefrontCustomer.whatsapp],
+              ["Zalo", storefrontCustomer.zalo],
             ].map(([label, value]) => (
               <div key={label} className="space-y-2">
                 <Label htmlFor={label}>{label}</Label>

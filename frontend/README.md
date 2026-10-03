@@ -6,23 +6,23 @@ You are a world-class Senior Product Designer, Senior UI/UX Designer, and Senior
 
 You deeply understand:
 
- Modern Minimalism
+Modern Minimalism
 
- Premium sportswear branding
+Premium sportswear branding
 
- Mobile-first UX
+Mobile-first UX
 
- Responsive web design
+Responsive web design
 
- React + TypeScript architecture
+React + TypeScript architecture
 
- High conversion e-commerce experiences
+High conversion e-commerce experiences
 
- Clean component systems
+Clean component systems
 
- Accessible UI
+Accessible UI
 
- Scalable frontend architecture
+Scalable frontend architecture
 
 Your mission is to design an elegant, premium, modern football boot marketplace that feels like a combination of Nike.com, Adidas.com, GOAT, StockX, and premium football boot collectors.
 
@@ -54,11 +54,11 @@ Instead:
 
 When a customer submits an order:
 
- the shop owner receives a notification
+the shop owner receives a notification
 
- the owner manually contacts the customer
+the owner manually contacts the customer
 
- communication happens through Facebook Messenger, Instagram, WhatsApp, Zalo, or phone number provided by the customer.
+communication happens through Facebook Messenger, Instagram, WhatsApp, Zalo, or phone number provided by the customer.
 
 The platform contains two main systems:
 
@@ -68,15 +68,15 @@ Features include:
 
 Authentication
 
- Login
+Login
 
- Register
+Register
 
- Forgot Password
+Forgot Password
 
- Social login placeholders
+Social login placeholders
 
- Profile
+Profile
 
 Home Page
 
@@ -352,47 +352,47 @@ Create an extremely modern interface.
 
 Inspired by:
 
- Nike
+Nike
 
- Adidas
+Adidas
 
- Puma
+Puma
 
- GOAT
+GOAT
 
- StockX
+StockX
 
- KicksCrew
+KicksCrew
 
- Stadium Goods
+Stadium Goods
 
 Use:
 
- Large typography
+Large typography
 
- Premium whitespace
+Premium whitespace
 
- Rounded corners
+Rounded corners
 
- Elegant shadows
+Elegant shadows
 
- Glassmorphism where appropriate
+Glassmorphism where appropriate
 
- Beautiful product cards
+Beautiful product cards
 
- Smooth animations
+Smooth animations
 
- Premium iconography
+Premium iconography
 
- Modern dashboard
+Modern dashboard
 
- Responsive navigation
+Responsive navigation
 
- Sticky header
+Sticky header
 
- Bottom navigation on mobile
+Bottom navigation on mobile
 
- Floating action buttons when appropriate
+Floating action buttons when appropriate
 
 The UI should feel premium rather than generic.
 
@@ -402,125 +402,125 @@ Frontend only.
 
 Framework:
 
- React
+React
 
- TypeScript
+TypeScript
 
 Preferred ecosystem:
 
- Vite
+Vite
 
- React Router
+React Router
 
- Tailwind CSS
+Tailwind CSS
 
- shadcn/ui
+shadcn/ui
 
- Framer Motion
+Framer Motion
 
- React Hook Form
+React Hook Form
 
- Zod
+Zod
 
- TanStack Query
+TanStack Query
 
- Zustand
+Zustand
 
- Axios
+Axios
 
- Lucide React
+Lucide React
 
 CONSTRAINTS
 
- Web application only.
+Web application only.
 
- NOT a native mobile application.
+NOT a native mobile application.
 
- Design Mobile First.
+Design Mobile First.
 
- Fully responsive across mobile, tablet, laptop, and desktop.
+Fully responsive across mobile, tablet, laptop, and desktop.
 
- Optimize every page for mobile browsing.
+Optimize every page for mobile browsing.
 
- Build reusable UI components.
+Build reusable UI components.
 
- Follow Atomic Design principles.
+Follow Atomic Design principles.
 
- Use clean folder structure.
+Use clean folder structure.
 
- Use reusable layouts.
+Use reusable layouts.
 
- Use modern UI patterns.
+Use modern UI patterns.
 
- Ensure excellent accessibility (WCAG).
+Ensure excellent accessibility (WCAG).
 
- Support dark mode and light mode.
+Support dark mode and light mode.
 
- Keep interactions smooth and intuitive.
+Keep interactions smooth and intuitive.
 
- Do not implement online payment.
+Do not implement online payment.
 
- Do not implement real-time chat.
+Do not implement real-time chat.
 
- Generate realistic placeholder data.
+Generate realistic placeholder data.
 
- Use English for all UI text.
+Use English for all UI text.
 
- Design with scalability for future backend integration.
+Design with scalability for future backend integration.
 
 OUTPUT
 
 Generate a complete frontend project specification including:
 
- Overall design system (colors, typography, spacing, icons, shadows, border radius, dark mode).
+Overall design system (colors, typography, spacing, icons, shadows, border radius, dark mode).
 
- Information architecture.
+Information architecture.
 
- Complete sitemap.
+Complete sitemap.
 
- User flow diagrams for Customer and Admin.
+User flow diagrams for Customer and Admin.
 
- Responsive layouts for:
+Responsive layouts for:
 
- Mobile
+Mobile
 
- Tablet
+Tablet
 
- Desktop
+Desktop
 
- High-fidelity UI mockups for every major page.
+High-fidelity UI mockups for every major page.
 
- Component library with reusable React components.
+Component library with reusable React components.
 
- Page-by-page layout specifications.
+Page-by-page layout specifications.
 
- Folder structure for a React + TypeScript project.
+Folder structure for a React + TypeScript project.
 
- Routing structure.
+Routing structure.
 
- State management architecture.
+State management architecture.
 
- Suggested API structure (frontend contracts only).
+Suggested API structure (frontend contracts only).
 
- Dashboard layouts.
+Dashboard layouts.
 
- Product card variations.
+Product card variations.
 
- Empty states.
+Empty states.
 
- Loading states.
+Loading states.
 
- Error states.
+Error states.
 
- Success states.
+Success states.
 
- Responsive navigation.
+Responsive navigation.
 
- Mobile bottom navigation.
+Mobile bottom navigation.
 
- Design interactions and animations.
+Design interactions and animations.
 
- Produce the UI in a production-ready quality level suitable for a premium football boot resale platform competing with leading sports e-commerce websites.
+Produce the UI in a production-ready quality level suitable for a premium football boot resale platform competing with leading sports e-commerce websites.
 
 This project was built with [Lovable](https://lovable.dev).
 
@@ -536,11 +536,23 @@ Continue developing this project in the [Lovable editor](https://lovable.dev/pro
 
 ## Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+The frontend lives in `frontend/`. You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
 git clone <this-repository-url>
-cd <repository-name>
-npm i
+cd <repository-name>/frontend
+npm install
+cp .env.example .env.local
 npm run dev
 ```
+
+Useful checks and formatting commands:
+
+```sh
+npm run typecheck
+npm run lint
+npm run build
+npm run format
+```
+
+`src/features/` contains domain code and mock-backed services. Replace the service implementations with backend requests when the API is available; the UI currently continues to use the existing mock catalog and order data. Configure the API base URL and local Vite port in `.env.local` using `.env.example` as a guide. Husky runs Lint-Staged before commits.

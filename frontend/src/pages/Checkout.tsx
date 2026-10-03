@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { formatAUD, getProduct } from "@/lib/products";
+import { formatAUD, getProduct } from "@/features/products/products.service";
 import { useShop } from "@/store/shop";
 
 const schema = z.object({
@@ -39,9 +39,10 @@ type FormValues = z.infer<typeof schema>;
 export default function Checkout() {
   const navigate = useNavigate();
   const { cart, clearCart } = useShop();
-  const lines = cart
-    .map((l) => ({ qty: l.qty, product: getProduct(l.id)! }))
-    .filter((x) => x.product);
+  const lines = cart.flatMap((line) => {
+    const product = getProduct(line.id);
+    return product ? [{ qty: line.qty, product }] : [];
+  });
   const subtotal = lines.reduce((s, l) => s + l.product.price * l.qty, 0);
   const shipping = subtotal > 300 || subtotal === 0 ? 0 : 15;
 
@@ -60,7 +61,7 @@ export default function Checkout() {
 
   const onSubmit = () => {
     clearCart();
-    navigate({ to: "/order-confirmed" });
+    navigate("/order-confirmed");
   };
 
   if (lines.length === 0) {

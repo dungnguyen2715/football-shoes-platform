@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { SlidersHorizontal, Search, X } from "lucide-react";
+import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -19,21 +20,17 @@ import { ProductCard } from "@/components/product/ProductCard";
 import {
   brands,
   colors,
-  products,
+  getProducts,
   sizes,
   surfaceLabel,
   surfaces,
-  type Surface,
-} from "@/lib/products";
-
-interface ShopSearch {
-  brand?: string;
-  surface?: string;
-}
+} from "@/features/products/products.service";
+import type { Surface } from "@/types";
 
 type Sort = "newest" | "price-asc" | "price-desc" | "condition";
 
 export default function Shop() {
+  const products = getProducts();
   const [searchParams] = useSearchParams();
   const initial = {
     brand: searchParams.get("brand") || undefined,
@@ -71,7 +68,18 @@ export default function Shop() {
       if (sort === "condition") return b.condition - a.condition;
       return b.createdAt.localeCompare(a.createdAt);
     });
-  }, [query, brandSel, sizeSel, surfaceSel, colorSel, minCondition, maxPrice, inStockOnly, sort]);
+  }, [
+    products,
+    query,
+    brandSel,
+    sizeSel,
+    surfaceSel,
+    colorSel,
+    minCondition,
+    maxPrice,
+    inStockOnly,
+    sort,
+  ]);
 
   const activeCount =
     brandSel.length + sizeSel.length + surfaceSel.length + colorSel.length + (inStockOnly ? 1 : 0);
@@ -278,7 +286,7 @@ export default function Shop() {
   );
 }
 
-function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
+function FilterGroup({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="space-y-3">
       <p className="eyebrow">{title}</p>

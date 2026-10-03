@@ -4,31 +4,7 @@ import boot3 from "@/assets/boot-3.jpg";
 import boot4 from "@/assets/boot-4.jpg";
 import boot5 from "@/assets/boot-5.jpg";
 import boot6 from "@/assets/boot-6.jpg";
-
-export type Availability = "available" | "reserved" | "sold";
-export type Surface = "FG" | "SG" | "AG" | "TF" | "IC";
-
-export interface Product {
-  id: string;
-  slug: string;
-  name: string;
-  brand: string;
-  model: string;
-  price: number;
-  retailPrice: number;
-  size: string;
-  condition: number; // 1-10
-  conditionLabel: string;
-  surface: Surface;
-  studType: string;
-  colorway: string;
-  color: string;
-  images: string[];
-  availability: Availability;
-  description: string;
-  createdAt: string;
-  views: number;
-}
+import type { Product, Review, Surface } from "@/types";
 
 const imgs = [boot1, boot2, boot3, boot4, boot5, boot6];
 
@@ -299,21 +275,12 @@ export const surfaceLabel: Record<Surface, string> = {
   IC: "Indoor court",
 };
 
-export const getProduct = (id: string) => products.find((p) => p.id === id || p.slug === id);
-
 export const formatAUD = (n: number) =>
   new Intl.NumberFormat("en-AU", {
     style: "currency",
     currency: "AUD",
     maximumFractionDigits: 0,
   }).format(n);
-
-export interface Review {
-  name: string;
-  location: string;
-  text: string;
-  rating: number;
-}
 
 export const reviews: Review[] = [
   {
@@ -334,77 +301,4 @@ export const reviews: Review[] = [
     text: "Second pair from Bootyard. Being able to sort by stud type and surface saves so much time.",
     rating: 5,
   },
-];
-
-export interface AdminOrder {
-  id: string;
-  customer: string;
-  contact: string;
-  channel: string;
-  items: number;
-  total: number;
-  status: "Pending" | "Contacted" | "Confirmed" | "Completed" | "Cancelled";
-  date: string;
-}
-
-export const adminOrders: AdminOrder[] = [
-  {
-    id: "BY-2041",
-    customer: "Liam O'Connell",
-    contact: "+61 412 883 210",
-    channel: "WhatsApp",
-    items: 1,
-    total: 289,
-    status: "Pending",
-    date: "2026-07-29",
-  },
-  {
-    id: "BY-2040",
-    customer: "Ava Nguyen",
-    contact: "ava.n@email.com",
-    channel: "Instagram",
-    items: 2,
-    total: 505,
-    status: "Contacted",
-    date: "2026-07-28",
-  },
-  {
-    id: "BY-2039",
-    customer: "Daniel Kerr",
-    contact: "+61 401 224 907",
-    channel: "Messenger",
-    items: 1,
-    total: 245,
-    status: "Confirmed",
-    date: "2026-07-28",
-  },
-  {
-    id: "BY-2038",
-    customer: "Sofia Marchetti",
-    contact: "sofia.m@email.com",
-    channel: "Email",
-    items: 1,
-    total: 175,
-    status: "Completed",
-    date: "2026-07-26",
-  },
-  {
-    id: "BY-2037",
-    customer: "Tom Whitfield",
-    contact: "+61 433 118 002",
-    channel: "Zalo",
-    items: 1,
-    total: 95,
-    status: "Cancelled",
-    date: "2026-07-25",
-  },
-];
-
-export const revenueSeries = [
-  { month: "Feb", revenue: 4200, orders: 18 },
-  { month: "Mar", revenue: 5100, orders: 22 },
-  { month: "Apr", revenue: 4800, orders: 20 },
-  { month: "May", revenue: 6400, orders: 27 },
-  { month: "Jun", revenue: 7900, orders: 33 },
-  { month: "Jul", revenue: 9350, orders: 39 },
 ];
